@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Любовь Коничняк](https://up.htmlacademy.ru/javascript-individual/2/user/2546567).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Лепешкин](https://htmlacademy.ru/profile/spearance).
 
 ---
 
