@@ -1,4 +1,3 @@
-
 function getRandomIntInclusive(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
@@ -22,6 +21,7 @@ const getMessage = () => {
     const randomStr = MESSAGES[getRandomIntInclusive(0, MESSAGES.length - 1)];
     messageText = `${messageText} ${randomStr}`;
   }
+
   return messageText;
 };
 
@@ -41,6 +41,7 @@ const getComments = () => {
 
     newComments.push(newComment);
   }
+
   return newComments;
 };
 
@@ -57,6 +58,7 @@ const getPhotos = () => {
     };
     newPhotos.push(photo);
   }
+
   return newPhotos;
 };
 
