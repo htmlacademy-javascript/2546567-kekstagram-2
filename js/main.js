@@ -59,3 +59,5 @@ const getPhotos = () => {
   }
   return newPhotos;
 };
+
+getPhotos();
