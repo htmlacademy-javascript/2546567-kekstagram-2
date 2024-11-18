@@ -17,3 +17,34 @@ const getIsPalindrom = function (line) {
 };
 
 getIsPalindrom('То Пот');
+
+const getIsGoodMeeting = function (
+  startDay,
+  endDay,
+  startMeeting,
+  durationMeeting
+) {
+  const getMinutesFromTime = (time) => {
+    const arrayFromString = time.split(':');
+    const hours = Number(arrayFromString[0]);
+    const minutes = Number(arrayFromString[1]);
+
+    const result = hours * 60 + minutes;
+
+    return result;
+  };
+  const startDayInMinutes = getMinutesFromTime(startDay);
+  const endDayInMinutes = getMinutesFromTime(endDay);
+  const startMeetingInMinutes = getMinutesFromTime(startMeeting);
+
+  if (startDayInMinutes > startMeetingInMinutes) {
+    return false;
+  } else if (endDayInMinutes < startMeetingInMinutes + durationMeeting) {
+    return false;
+  } else {
+    return true;
+  }
+
+};
+
+getIsGoodMeeting('08:00', '17:30', '14:30', 90);
