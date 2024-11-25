@@ -47,7 +47,7 @@ export const getPhotos = () => {
   for (let index = 0; index < 25; index++) {
     const photo = {
       id: Math.random(),
-      url: `photos/${getRandomIntInclusive(1, 25)}.jpg`,
+      url: `photos/${index + 1}.jpg`,
       description: 'фото, загруженное пользователем',
       likes: getRandomIntInclusive(15, 200),
       comments: getComments()
