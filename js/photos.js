@@ -30,7 +30,7 @@ const getComments = () => {
   for (let index = 0; index < commentsCount; index++) {
     const newComment = {
       id: Math.random(),
-      avatar: `img/avatar-${getRandomIntInclusive(1, 6)}.svg.`,
+      avatar: `img/avatar-${getRandomIntInclusive(1, 6)}.svg`,
       message: getMessage(),
       name: getName(),
     };
@@ -57,3 +57,5 @@ export const getPhotos = () => {
 
   return newPhotos;
 };
+
+export const PHOTOS_OBJECTS = getPhotos();
