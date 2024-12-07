@@ -4,17 +4,6 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-export { getRandomIntInclusive };
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export const onEscapeKeydown = () => {
-
-  document.addEventListener('keydown', (evt) => {
-    const modalWindowElement = document.querySelector('.big-picture');
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      const body = document.querySelector('body');
-      modalWindowElement.classList.add('hidden');
-      body.classList.remove('modal-open');
-    }
-  });
-};
+export { getRandomIntInclusive, isEscapeKey };
