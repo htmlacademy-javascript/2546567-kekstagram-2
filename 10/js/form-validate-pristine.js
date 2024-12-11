@@ -57,13 +57,7 @@ pristine.addValidator(inputHashtag, hashtegsHandler, () => errorMessage, 2, fals
 
 
 const onHashtagInput = () => {
-  if (pristine.validate() && inputHashtag.value.length > 0) {
-    //разблокировка кнопки
-    imgUploadSubmit.disabled = false;
-  } else {
-    //блокировка кнопки
-    imgUploadSubmit.disabled = true;
-  }
+  imgUploadSubmit.disabled = !(pristine.validate() && inputHashtag.value.length > 0);
 };
 
 inputHashtag.addEventListener('input', onHashtagInput);

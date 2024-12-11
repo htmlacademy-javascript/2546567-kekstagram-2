@@ -4,4 +4,6 @@ import './functions.js';
 import './render-photos.js';
 import './form.js';
 import './form-validate-pristine.js';
+import './effects.js';
+
 
