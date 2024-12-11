@@ -4,6 +4,13 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEscapeKey = (evt) => {
+  if (evt.key === 'Escape') {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export { getRandomIntInclusive, isEscapeKey };
+
