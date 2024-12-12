@@ -16,9 +16,10 @@ const imagePreview = uploadForm.querySelector('.img-upload__preview');
 const sliderUpload = uploadForm.querySelector('.img-upload__effect-level');
 const effectLevelValue = uploadForm.querySelector('.effect-level__value');
 const sliderElement = uploadForm.querySelector('.effect-level__slider');
-const image = imagePreview.querySelector('.img');
+const image = imagePreview.querySelector('img');
 
 effectLevelValue.value = DEFEULT_EFFECT_LEVEL;
+
 let currentEffect = '';
 
 sliderUpload.classList.add('visually-hidden');
@@ -30,17 +31,17 @@ const effects = {
   },
 
   chrome: () => {
-    sliderUpload.classList.add('visually-hidden');
+    sliderUpload.classList.remove('visually-hidden');
     return `grayscale(${parseInt(effectLevelValue.value, RADIX) * EFFECT_STEP})`;
   },
 
   sepia: () => {
-    sliderUpload.classList.add('visually-hidden');
+    sliderUpload.classList.remove('visually-hidden');
     return `sepia(${parseInt(effectLevelValue.value, RADIX) * EFFECT_STEP})`;
   },
 
   marvin: () => {
-    sliderUpload.classList.add('visually-hidden');
+    sliderUpload.classList.remove('visually-hidden');
     return `invert(${Math.floor(effectLevelValue.value)}%)`;
   },
   phobos: () => {
@@ -48,7 +49,7 @@ const effects = {
     return `blur(${(parseInt(effectLevelValue.value, RADIX) * MAX_BLUR_VALUE) * EFFECT_STEP}px)`;
   },
   heat: () => {
-    sliderUpload.classList.remove('visually-hidde');
+    sliderUpload.classList.remove('visually-hidden');
     return `brightness(${(parseInt(effectLevelValue.value, RADIX) * MAX_BRIGHTNESS) * EFFECT_STEP})`;
   }
 };
@@ -61,16 +62,11 @@ const onEffectsListClick = (evt) => {
   }
 
   if (target.classList.contains('effects__preview')) {
-    // if (currentEffect !=== '') {
-    //   image.classList.remove(currentEffect);
-    // }
-
     sliderElement.noUiSlider.set(Slider.MAX);
-    effectLevelValue.value = Slider.MAX;
+    effectLevelValue.value = Number(Slider.MAX);
 
-    currentEffect = target.classList[1];
-    image.classList.add(currentEffect);
-    image.style.filter = effects[currentEffect.replace('effects__preview--', '')]();
+    currentEffect = target.classList[1].replace('effects__preview--', '');
+    image.style.filter = effects[currentEffect]();
   }
 };
 
@@ -88,7 +84,6 @@ noUiSlider.create(sliderElement, {
 
 sliderElement.noUiSlider.on('change', () => {
   effectLevelValue.value = sliderElement.noUiSlider.get();
-
   image.style.filter = effects[currentEffect.replace('effects__preview--', '')]();
 }
 );
