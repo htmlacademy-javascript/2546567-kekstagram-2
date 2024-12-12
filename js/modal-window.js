@@ -1,5 +1,11 @@
 import { PHOTOS_OBJECTS } from './photos.js';
-import { onEscapeKeydown } from './util.js';
+import { isEscapeKey } from './util.js';
+
+const STEP = 5;
+let limit = STEP;
+let pictureObj = null;
+
+const body = document.querySelector('body');
 const modalWindowElement = document.querySelector('.big-picture');
 const bigPilctureCancel = modalWindowElement.querySelector(
   '.big-picture__cancel'
@@ -10,10 +16,6 @@ const bigPictureImg = modalWindowElement
   .querySelector('img');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
-let pictureObj = null;
-
-const STEP = 5;
-let limit = STEP;
 
 //Создание большой фотки
 const createBigPicture = () => {
@@ -23,8 +25,9 @@ const createBigPicture = () => {
     pictureObj.comments.length;
   document.querySelector('.social__caption').textContent =
     pictureObj.description;
+  document.querySelector('.likes-count').textContent =
+    pictureObj.likes;
 
-  const body = document.querySelector('body');
   body.classList.add('modal-open');
 
   if (pictureObj.comments.length <= limit) {
@@ -70,31 +73,38 @@ const createComentsForBigPicture = () => {
   }
 };
 
+const onModalWindowElementEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    modalWindowElement.classList.add('hidden');
+    body.classList.remove('modal-open');
+    document.removeEventListener('keydown', onModalWindowElementEscKeydown);
+  }
+};
+
 //Клик по миниатюре
 photosContainer.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('picture__img')) {
     limit = STEP;
     modalWindowElement.classList.remove('hidden');
 
-    const htmlElementId = evt.target.getAttribute('data-picture-id');
+    const htmlElementId = evt.target.dataset.pictureId;
+
     pictureObj = PHOTOS_OBJECTS.find(
       (item) => item.id === Number(htmlElementId)
     );
 
     createBigPicture();
     createComentsForBigPicture();
+    document.addEventListener('keydown', onModalWindowElementEscKeydown);
   }
 });
 
 //Клик по крестику закрытия
 bigPilctureCancel.addEventListener('click', () => {
   modalWindowElement.classList.add('hidden');
-  const body = document.querySelector('body');
   body.classList.remove('modal-open');
 });
-
-//Нажатие на Escape
-onEscapeKeydown();
 
 //Клик по кнопке "Загрузить еще..."
 commentsLoader.addEventListener('click', () => {
