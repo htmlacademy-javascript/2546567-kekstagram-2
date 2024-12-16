@@ -1,4 +1,5 @@
-import { PHOTOS_OBJECTS } from './photos.js';
+
+import { PHOTOS_OBJECTS } from './main.js';
 import { isEscapeKey } from './util.js';
 
 const STEP = 5;

@@ -1,4 +1,3 @@
-import { PHOTOS_OBJECTS } from './photos.js';
 import './modal-window.js';
 
 const fragment = new DocumentFragment();
@@ -7,15 +6,22 @@ const photosContainer = document.querySelector('.pictures.container');
 
 const template = document.querySelector('#picture').content;
 
-PHOTOS_OBJECTS.forEach((obj) => {
-  const copy = template.cloneNode(true);
+const renderPhotos = (objects) => {
 
-  copy.querySelector('.picture__img').src = obj.url;
-  copy.querySelector('.picture__img').dataset.pictureId = obj.id;
-  copy.querySelector('.picture__likes').textContent = obj.likes;
-  copy.querySelector('.picture__comments').textContent = obj.comments.length;
+  objects.forEach((obj) => {
+    const copy = template.cloneNode(true);
 
-  fragment.appendChild(copy);
-});
+    copy.querySelector('.picture__img').src = obj.url;
+    copy.querySelector('.picture__img').dataset.pictureId = obj.id;
+    copy.querySelector('.picture__likes').textContent = obj.likes;
+    copy.querySelector('.picture__comments').textContent = obj.comments.length;
 
-photosContainer.appendChild(fragment);
+    fragment.appendChild(copy);
+  });
+
+  photosContainer.appendChild(fragment);
+};
+
+export { renderPhotos };
+
+
