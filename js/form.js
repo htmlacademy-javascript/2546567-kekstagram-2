@@ -23,6 +23,18 @@ function onOpenModalClick() {
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscKeydown);
   imgUploadCancel.addEventListener('click', onCloseModalClick);
+
+  //Загрузка превью новой выбранной фотографии
+  const file = imgUploadInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      imagePreview.querySelector('img').src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    imagePreview.querySelector('img').src = '';
+  }
 }
 
 function onCloseModalClick() {
@@ -70,4 +82,3 @@ const onPlusButtonClick = () => {
 
 minusButton.addEventListener('click', onMinusButtonClick);
 plusButton.addEventListener('click', onPlusButtonClick);
-

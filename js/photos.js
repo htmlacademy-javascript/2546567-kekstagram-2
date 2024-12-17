@@ -58,4 +58,4 @@ const getPhotos = () => {
   return newPhotos;
 };
 
-export const PHOTOS_OBJECTS = getPhotos();
+getPhotos();

@@ -2,6 +2,7 @@ const MAX_HASHTAGS = 5;
 const MAX_COMMENT_LENGTH = 140;
 let errorMessage;
 
+const form = document.querySelector('.img-upload__form');
 const formUpload = document.querySelector('.img-upload__form');
 const errorField = document.querySelector('.img-upload__item');
 const errorFieldTextarea = document.querySelector('.img-upload__item-text');
@@ -18,10 +19,6 @@ const pristine = new Pristine(formUpload, {
   errorTextTag: 'div',
   errorTextClass: 'img-upload__error',
 });
-
-if (!inputHashtag.value) {
-  imgUploadSubmit.disabled = true;
-}
 
 const hashtegsHandler = (value) => {
   errorMessage = '';
@@ -57,7 +54,7 @@ pristine.addValidator(inputHashtag, hashtegsHandler, () => errorMessage, 2, fals
 
 
 const onHashtagInput = () => {
-  imgUploadSubmit.disabled = !(pristine.validate() && inputHashtag.value.length > 0);
+  imgUploadSubmit.disabled = !(pristine.validate());
 };
 
 inputHashtag.addEventListener('input', onHashtagInput);
@@ -70,10 +67,6 @@ const textDescriptionHandler = (value) => {
   }
 
   const rules = [
-    {
-      check: inputHashtag.value.length === 0,
-      error: 'Необходимо заполнить поле с хеш-тегами',
-    },
     {
       check: value.length > MAX_COMMENT_LENGTH,
       error: `Максимальное количество символов: ${MAX_COMMENT_LENGTH}`,
@@ -95,3 +88,84 @@ const textDescriptionHandler = (value) => {
 };
 
 pristine.addValidator(textDescription, textDescriptionHandler, () => errorMessage, 2, false);
+
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  evt.stopPropagation();
+
+  const formData = new FormData(form); // Собираем данные из формы
+  sendData(formData);
+
+  const template = document.querySelector('#success').content;
+  const fragment = template.cloneNode(true);
+  const alertContainer = fragment.querySelector('.success');
+
+  alertContainer.querySelector('.success__title').textContent = 'Изображение успешно загружено';
+  const successButton = alertContainer.querySelector('.success__button');
+
+  successButton.addEventListener('click', () => {
+    alertContainer.remove();
+  });
+
+  document.addEventListener('keydown', () => alertContainer.remove());
+
+  document.body.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('success__inner')) {
+      alertContainer.remove();
+    }
+  });
+
+  document.body.append(alertContainer);
+
+});
+
+function sendData(formData) {
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => response.json()).then(() => {
+      inputHashtag.value = '';
+      textDescription.value = '';
+
+      const effectsList = document.querySelectorAll('.effects__item');
+
+      effectsList.forEach((item) => {
+        if (item.querySelector('input').id === 'effect-none') {
+          item.querySelector('input').checked = true;
+        } else {
+          item.querySelector('input').checked = false;
+        }
+
+      });
+    })
+    .catch(() => {
+      const successMessage = document.querySelector('.success');
+
+      if (successMessage) {
+        successMessage.remove();
+      }
+
+
+      const template = document.querySelector('#error').content;
+      const fragment = template.cloneNode(true);
+      const alertContainer = fragment.querySelector('.error');
+
+      alertContainer.querySelector('.error__title').textContent = 'Ошибка загрузки файла';
+      document.body.append(alertContainer);
+
+      const errorButton = document.querySelector('.error__button');
+
+      errorButton.addEventListener('click', () => {
+        alertContainer.remove();
+      });
+
+      document.addEventListener('keydown', () => alertContainer.remove());
+
+      document.body.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('error__inner')) {
+          alertContainer.remove();
+        }
+      });
+    });
+}
