@@ -6,6 +6,8 @@ import './form.js';
 import './form-validate-pristine.js';
 import './effects.js';
 import './fetch.js';
+import './filter.js';
+import { applyFilter, configFilter } from './filter.js';
 import { loadData } from './fetch.js';
 import { renderPhotos } from './render-photos.js';
 
@@ -14,6 +16,7 @@ let PHOTOS_OBJECTS = [];
 const onSuccess = (data) => {
   PHOTOS_OBJECTS = data.slice();
   renderPhotos(PHOTOS_OBJECTS);
+  configFilter(PHOTOS_OBJECTS);
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 };
 
@@ -33,5 +36,17 @@ const onError = () => {
 };
 
 loadData(onSuccess, onError);
+
+// async function bootstrapApp() {
+//   configUploadHandlers();
+//   try {
+//     const pictures = await fetchPictures();
+//     renderPhotos(pictures);
+//     configFilter(pictures);
+//   } catch {
+//     showFetchError();
+//   }
+// }
+// bootstrapApp();
 
 export { PHOTOS_OBJECTS };

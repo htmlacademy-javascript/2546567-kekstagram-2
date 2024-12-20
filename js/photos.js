@@ -41,7 +41,7 @@ const getComments = () => {
   return newComments;
 };
 
-const getPhotos = () => {
+export const getPhotos = () => {
   const newPhotos = [];
 
   for (let index = 0; index < 25; index++) {

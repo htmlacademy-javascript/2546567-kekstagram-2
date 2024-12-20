@@ -12,5 +12,15 @@ const isEscapeKey = (evt) => {
   }
 };
 
-export { getRandomIntInclusive, isEscapeKey };
+
+function debounce(callback, timeoutDelay = 500) {
+  let timeout;
+  return function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback(...arguments), timeoutDelay);
+  };
+}
+
+
+export { getRandomIntInclusive, isEscapeKey, debounce };
 
