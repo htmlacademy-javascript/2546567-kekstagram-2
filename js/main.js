@@ -7,7 +7,7 @@ import './form-validate-pristine.js';
 import './effects.js';
 import './fetch.js';
 import './filter.js';
-import { applyFilter, configFilter } from './filter.js';
+import { configFilter } from './filter.js';
 import { loadData } from './fetch.js';
 import { renderPhotos } from './render-photos.js';
 
