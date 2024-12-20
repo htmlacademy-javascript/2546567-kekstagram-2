@@ -37,16 +37,4 @@ const onError = () => {
 
 loadData(onSuccess, onError);
 
-// async function bootstrapApp() {
-//   configUploadHandlers();
-//   try {
-//     const pictures = await fetchPictures();
-//     renderPhotos(pictures);
-//     configFilter(pictures);
-//   } catch {
-//     showFetchError();
-//   }
-// }
-// bootstrapApp();
-
 export { PHOTOS_OBJECTS };
