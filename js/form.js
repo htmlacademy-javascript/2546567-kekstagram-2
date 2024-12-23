@@ -1,3 +1,4 @@
+import { resetEffect } from './create-filters.js';
 import { isEscapeKey } from './util.js';
 
 const Zoom = {
@@ -15,16 +16,20 @@ const imagePreview = document.querySelector('.img-upload__preview');
 const minusButton = document.querySelector('.scale__control--smaller');
 const plusButton = document.querySelector('.scale__control--bigger');
 
-
 imgUploadInput.addEventListener('change', onOpenModalClick);
 
 function onOpenModalClick() {
+
+  const errorBox = document.querySelector('.pristine-error');
+  if (errorBox) {
+    errorBox.remove();
+  }
+
   body.classList.add('modal-open');
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscKeydown);
   imgUploadCancel.addEventListener('click', onCloseModalClick);
 
-  //Загрузка превью новой выбранной фотографии
   const file = imgUploadInput.files[0];
   if (file) {
     const reader = new FileReader();
@@ -42,6 +47,7 @@ function onCloseModalClick() {
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadOverlayEscKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModalClick);
+  resetEffect();
 }
 
 function onUploadOverlayEscKeydown(evt) {
@@ -49,6 +55,7 @@ function onUploadOverlayEscKeydown(evt) {
     !evt.target.classList.contains('text__hashtags') &&
     !evt.target.classList.contains('text__description')) {
     onCloseModalClick();
+    resetEffect();
   }
 }
 
@@ -69,7 +76,7 @@ const changeZoom = (factor = 1) => {
 
   scaleControlValue.value = `${size}%`;
 
-  imagePreview.style.transform = `scale(${size / 100})`;
+  imagePreview.querySelector('img').style.transform = `scale(${size / 100})`;
 };
 
 const onMinusButtonClick = () => {
