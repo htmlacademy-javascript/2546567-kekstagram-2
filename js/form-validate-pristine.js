@@ -14,7 +14,6 @@ const textDescription = document.querySelector('.text__description');
 const pristine = new Pristine(formUpload, {
   classTo: 'img-upload__item',
   errorClass: 'img-upload__item--invalid',
-  successClass: 'img-upload__item--valid',
   errorTextParent: 'img-upload__item',
   errorTextTag: 'div',
   errorTextClass: 'img-upload__error',
@@ -36,13 +35,20 @@ const hashtegsHandler = (value) => {
       check: inputArray.some((item) => !/^#[a-za-аё0-9]{1,19}$/i.test(item)),
       error: 'Хеш-тег содержит недопустимые символы',
     },
+    {
+      check: hasDuplicatesIgnoreCase(inputArray),
+      error: 'Хеш-тег должны быть уникальными',
+    },
   ];
 
   return rules.every((rule) => {
     const isInvalid = rule.check;
     if (isInvalid) {
       errorMessage = rule.error;
-      errorField.textContent = rule.error;
+      const errorBox = document.createElement('div');
+      errorBox.classList.add('pristine-error');
+      errorBox.textContent = rule.error;
+      errorField.appendChild(errorBox);
     } else {
       errorField.textContent = '';
     }
@@ -51,7 +57,6 @@ const hashtegsHandler = (value) => {
 };
 
 pristine.addValidator(inputHashtag, hashtegsHandler, () => errorMessage, 2, false);
-
 
 const onHashtagInput = () => {
   imgUploadSubmit.disabled = !(pristine.validate());
@@ -77,7 +82,11 @@ const textDescriptionHandler = (value) => {
     const isInvalid = rule.check;
     if (isInvalid) {
       errorMessage = rule.error;
-      errorFieldTextarea.textContent = rule.error;
+      const errorBox = document.createElement('div');
+      errorBox.classList.add('pristine-error');
+      errorBox.textContent = rule.error;
+      errorFieldTextarea.appendChild(errorBox);
+
       imgUploadSubmit.disabled = true;
     } else {
       errorFieldTextarea.textContent = '';
@@ -168,4 +177,16 @@ function sendData(formData) {
         }
       });
     });
+}
+
+function hasDuplicatesIgnoreCase(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const current = arr[i].toLowerCase();
+    for (let j = i + 1; j < arr.length; j++) {
+      if (current === arr[j].toLowerCase()) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
