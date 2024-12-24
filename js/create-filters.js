@@ -138,7 +138,6 @@ const resetEffect = () => {
   image.style.removeProperty('filter');
 
   sliderElement.noUiSlider.updateOptions(DEFAULT_OPTIONS_SLIDER);
-  // effectsList.querySelector('#effect-none').checked = true;
   const effectNone = effectsList.querySelector('#effect-none');
 
   if (effectNone) {
