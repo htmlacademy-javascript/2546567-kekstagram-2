@@ -7,7 +7,6 @@ const formUpload = document.querySelector('.img-upload__form');
 const errorField = document.querySelector('.img-upload__item');
 const errorFieldTextarea = document.querySelector('.img-upload__item-text');
 const imgUploadSubmit = document.querySelector('.img-upload__submit');
-
 const inputHashtag = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 

@@ -1,12 +1,6 @@
 import { resetEffect } from './create-filters.js';
 import { isEscapeKey } from './util.js';
 
-const Zoom = {
-  MIN: 25,
-  MAX: 100,
-  STEP: 25,
-};
-
 const body = document.querySelector('body');
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -15,6 +9,14 @@ const scaleControlValue = document.querySelector('.scale__control--value');
 const imagePreview = document.querySelector('.img-upload__preview');
 const minusButton = document.querySelector('.scale__control--smaller');
 const plusButton = document.querySelector('.scale__control--bigger');
+const inputHashtag = document.querySelector('.text__hashtags');
+const textDescription = document.querySelector('.text__description');
+
+const Zoom = {
+  MIN: 25,
+  MAX: 100,
+  STEP: 25,
+};
 
 imgUploadInput.addEventListener('change', onOpenModalClick);
 
@@ -42,12 +44,24 @@ function onOpenModalClick() {
   }
 }
 
+const resetZoom = () => {
+  scaleControlValue.value = `${Zoom.MAX}%`;
+  imagePreview.querySelector('img').style.transform = `scale(${Zoom.MAX / 100})`;
+};
+
+const resetTextInputs = () => {
+  inputHashtag.value = '';
+  textDescription.value = '';
+};
+
 function onCloseModalClick() {
   body.classList.remove('modal-open');
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadOverlayEscKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModalClick);
   resetEffect();
+  resetZoom();
+  resetTextInputs();
 }
 
 function onUploadOverlayEscKeydown(evt) {
@@ -56,26 +70,24 @@ function onUploadOverlayEscKeydown(evt) {
     !evt.target.classList.contains('text__description')) {
     onCloseModalClick();
     resetEffect();
+    resetZoom();
+    resetTextInputs();
   }
 }
 
 // зум
 const changeZoom = (factor = 1) => {
-
   let size = parseInt(scaleControlValue.value, 10) + (Zoom.STEP * factor);
-
 
   if (size < Zoom.MIN) {
     size = Zoom.MIN;
   }
-
 
   if (size > Zoom.MAX) {
     size = Zoom.MAX;
   }
 
   scaleControlValue.value = `${size}%`;
-
   imagePreview.querySelector('img').style.transform = `scale(${size / 100})`;
 };
 
@@ -86,6 +98,7 @@ const onMinusButtonClick = () => {
 const onPlusButtonClick = () => {
   changeZoom();
 };
+
 
 minusButton.addEventListener('click', onMinusButtonClick);
 plusButton.addEventListener('click', onPlusButtonClick);

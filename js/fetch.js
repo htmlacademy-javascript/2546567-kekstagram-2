@@ -1,11 +1,11 @@
 import { configFilter } from './filter.js';
 import { renderPhotos } from './render-photos.js';
 
+const ALERT_SHOW_TIME = 5000;
 const Urls = {
   GET: 'https://31.javascript.htmlacademy.pro/kekstagram/data',
   POST: 'https://31.javascript.htmlacademy.pro/kekstagram',
 };
-
 let PHOTOS_OBJECTS = [];
 
 const onSuccess = (data) => {
@@ -14,8 +14,6 @@ const onSuccess = (data) => {
   configFilter(PHOTOS_OBJECTS);
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 };
-
-const ALERT_SHOW_TIME = 5000;
 
 const onError = () => {
   const template = document.querySelector('#data-error').content;
