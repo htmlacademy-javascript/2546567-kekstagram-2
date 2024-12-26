@@ -1,6 +1,6 @@
-import { debounce } from './util.js';
 import { FILTER, SORTFUNC } from './const.js';
 import { renderPhotos } from './render-photos.js';
+import { debounce } from './util.js';
 
 let currentFilter = FILTER.default;
 let pictures = [];
@@ -17,7 +17,7 @@ function onFilterChanger(evt) {
   targetButton.classList.toggle(ACTIVE_BUTTON_CLASS);
   currentFilter = targetButton.getAttribute('id');
 
-  debounce(applyFilter);
+  applyFilter();
 }
 
 export function applyFilter() {
@@ -46,7 +46,7 @@ export function applyFilter() {
 
 function configFilter(picturesData) {
   filterElement.classList.remove('img-filter--inactive');
-  filterElement.addEventListener('click', onFilterChanger);
+  filterElement.addEventListener('click', debounce(onFilterChanger));
   pictures = picturesData;
 }
 
