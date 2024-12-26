@@ -14,11 +14,13 @@ const isEscapeKey = (evt) => {
 
 
 function debounce(callback, timeoutDelay = 500) {
-  let timeout;
-  return function () {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => callback(...arguments), timeoutDelay);
-  };
+  let timeoutId = null;
+
+  if (timeoutId) {
+    clearTimeout(timeoutId);
+  }
+
+  timeoutId = setTimeout(() => callback(), timeoutDelay);
 }
 
 
