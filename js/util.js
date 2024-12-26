@@ -12,16 +12,14 @@ const isEscapeKey = (evt) => {
   }
 };
 
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
 
-function debounce(callback, timeoutDelay = 500) {
-  let timeoutId = null;
-
-  if (timeoutId) {
+  return (...rest) => {
     clearTimeout(timeoutId);
-  }
-
-  timeoutId = setTimeout(() => callback(), timeoutDelay);
-}
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
 
 
 export { getRandomIntInclusive, isEscapeKey, debounce };
