@@ -1,4 +1,4 @@
-import { configFilter } from './filter.js';
+import { setFilterConfig } from './filter.js';
 import { renderPhotos } from './render-photos.js';
 
 const ALERT_SHOW_TIME = 5000;
@@ -11,7 +11,7 @@ let PHOTOS_OBJECTS = [];
 const onSuccess = (data) => {
   PHOTOS_OBJECTS = data.slice();
   renderPhotos(PHOTOS_OBJECTS);
-  configFilter(PHOTOS_OBJECTS);
+  setFilterConfig(PHOTOS_OBJECTS);
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 };
 
@@ -48,6 +48,5 @@ const sendRequest = (url, method, body) => {
 };
 
 const loadData = () => sendRequest(Urls.GET, 'GET', null, onSuccess, onError);
-const uploadData = (body) => sendRequest(Urls.POST, 'POST', body, onSuccess, onError);
 
-export { loadData, uploadData, PHOTOS_OBJECTS };
+export { loadData, PHOTOS_OBJECTS };
