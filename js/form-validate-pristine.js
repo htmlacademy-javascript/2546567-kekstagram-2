@@ -1,3 +1,5 @@
+import { onCloseModalClick } from './form.js';
+
 const MAX_HASHTAGS = 5;
 const MAX_COMMENT_LENGTH = 140;
 let errorMessage;
@@ -24,18 +26,18 @@ const hashtegsHandler = (value) => {
   if (!inputText) {
     return true;
   }
-  const inputArray = inputText.split(/\s+/);
+  const inputsArray = inputText.split(/\s+/);
   const rules = [
     {
-      check: inputArray.length > MAX_HASHTAGS,
+      check: inputsArray.length > MAX_HASHTAGS,
       error: `Нельзя указать больше ${MAX_HASHTAGS} хеш-тегов`,
     },
     {
-      check: inputArray.some((item) => !/^#[a-za-аё0-9]{1,19}$/i.test(item)),
+      check: inputsArray.some((item) => !/^#[a-za-аё0-9]{1,19}$/i.test(item)),
       error: 'Хеш-тег содержит недопустимые символы',
     },
     {
-      check: hasDuplicatesIgnoreCase(inputArray),
+      check: hasDuplicatesIgnoreCase(inputsArray),
       error: 'Хеш-тег должны быть уникальными',
     },
   ];
@@ -101,30 +103,8 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   evt.stopPropagation();
 
-  const formData = new FormData(form); // Собираем данные из формы
+  const formData = new FormData(form);
   sendData(formData);
-
-  const template = document.querySelector('#success').content;
-  const fragment = template.cloneNode(true);
-  const alertContainer = fragment.querySelector('.success');
-
-  alertContainer.querySelector('.success__title').textContent = 'Изображение успешно загружено';
-  const successButton = alertContainer.querySelector('.success__button');
-
-  successButton.addEventListener('click', () => {
-    alertContainer.remove();
-  });
-
-  document.addEventListener('keydown', () => alertContainer.remove());
-
-  document.body.addEventListener('click', (e) => {
-    if (!e.target.classList.contains('success__inner')) {
-      alertContainer.remove();
-    }
-  });
-
-  document.body.append(alertContainer);
-
 });
 
 function sendData(formData) {
@@ -133,19 +113,44 @@ function sendData(formData) {
     body: formData,
   })
     .then((response) => response.json()).then(() => {
+      const successMessage = document.querySelector('.success');
+
+      if (successMessage) {
+        successMessage.remove();
+      }
       inputHashtag.value = '';
       textDescription.value = '';
 
       const effectsList = document.querySelectorAll('.effects__item');
 
       effectsList.forEach((item) => {
-        if (item.querySelector('input').id === 'effect-none') {
-          item.querySelector('input').checked = true;
-        } else {
-          item.querySelector('input').checked = false;
-        }
-
+        item.querySelector('input').checked = item.querySelector('input').id === 'effect-none';
       });
+
+      const template = document.querySelector('#success').content;
+      const fragment = template.cloneNode(true);
+      const alertContainer = fragment.querySelector('.success');
+
+      alertContainer.querySelector('.success__title').textContent = 'Изображение успешно загружено';
+      const successButton = alertContainer.querySelector('.success__button');
+
+      successButton.addEventListener('click', () => {
+        alertContainer.remove();
+        onCloseModalClick();
+      });
+
+      const closeAlertModal = (e) => {
+        if (!e.target.classList.contains('success__inner')) {
+          alertContainer.remove();
+          onCloseModalClick();
+          document.removeEventListener('click', closeAlertModal);
+        }
+      };
+
+      document.addEventListener('click', closeAlertModal);
+
+      document.body.append(alertContainer);
+
     })
     .catch(() => {
       const successMessage = document.querySelector('.success');
@@ -153,7 +158,6 @@ function sendData(formData) {
       if (successMessage) {
         successMessage.remove();
       }
-
 
       const template = document.querySelector('#error').content;
       const fragment = template.cloneNode(true);
@@ -167,8 +171,6 @@ function sendData(formData) {
       errorButton.addEventListener('click', () => {
         alertContainer.remove();
       });
-
-      document.addEventListener('keydown', () => alertContainer.remove());
 
       document.body.addEventListener('click', (e) => {
         if (!e.target.classList.contains('error__inner')) {

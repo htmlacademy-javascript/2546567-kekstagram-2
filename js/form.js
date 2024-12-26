@@ -1,6 +1,12 @@
 import { resetEffect } from './create-filters.js';
 import { isEscapeKey } from './util.js';
 
+const Zoom = {
+  MIN: 25,
+  MAX: 100,
+  STEP: 25,
+};
+
 const body = document.querySelector('body');
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -13,16 +19,9 @@ const inputHashtag = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 const uploadForm = document.querySelector('.img-upload__form');
 
-const Zoom = {
-  MIN: 25,
-  MAX: 100,
-  STEP: 25,
-};
-
 imgUploadInput.addEventListener('change', onOpenModalClick);
 
 function onOpenModalClick() {
-
   const errorBox = document.querySelector('.pristine-error');
   if (errorBox) {
     errorBox.remove();
@@ -55,30 +54,41 @@ const resetTextInputs = () => {
   textDescription.value = '';
 };
 
+const formValuesReset = () => {
+  resetEffect();
+  resetZoom();
+  resetTextInputs();
+  uploadForm.reset();
+};
+
 function onCloseModalClick() {
   body.classList.remove('modal-open');
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadOverlayEscKeydown);
   imgUploadCancel.removeEventListener('click', onCloseModalClick);
-  resetEffect();
-  resetZoom();
-  resetTextInputs();
-  uploadForm.reset();
+  formValuesReset();
 }
 
 function onUploadOverlayEscKeydown(evt) {
+  const successAlert = document.querySelector('.success');
+  const errorAlert = document.querySelector('.error');
+
+  if (errorAlert) {
+    return errorAlert.remove();
+  }
+
+  if (successAlert) {
+    successAlert.remove();
+  }
+
   if (isEscapeKey(evt) &&
     !evt.target.classList.contains('text__hashtags') &&
     !evt.target.classList.contains('text__description')) {
     onCloseModalClick();
-    resetEffect();
-    resetZoom();
-    resetTextInputs();
-    uploadForm.reset();
+    formValuesReset();
   }
 }
 
-// зум
 const changeZoom = (factor = 1) => {
   let size = parseInt(scaleControlValue.value, 10) + (Zoom.STEP * factor);
 
@@ -102,6 +112,7 @@ const onPlusButtonClick = () => {
   changeZoom();
 };
 
-
 minusButton.addEventListener('click', onMinusButtonClick);
 plusButton.addEventListener('click', onPlusButtonClick);
+
+export { onCloseModalClick, onUploadOverlayEscKeydown };
