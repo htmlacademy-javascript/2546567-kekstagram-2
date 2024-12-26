@@ -11,6 +11,7 @@ const minusButton = document.querySelector('.scale__control--smaller');
 const plusButton = document.querySelector('.scale__control--bigger');
 const inputHashtag = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
+const uploadForm = document.querySelector('.img-upload__form');
 
 const Zoom = {
   MIN: 25,
@@ -62,6 +63,7 @@ function onCloseModalClick() {
   resetEffect();
   resetZoom();
   resetTextInputs();
+  uploadForm.reset();
 }
 
 function onUploadOverlayEscKeydown(evt) {
@@ -72,6 +74,7 @@ function onUploadOverlayEscKeydown(evt) {
     resetEffect();
     resetZoom();
     resetTextInputs();
+    uploadForm.reset();
   }
 }
 
