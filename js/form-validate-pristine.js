@@ -180,11 +180,11 @@ function sendData(formData) {
     });
 }
 
-function hasDuplicatesIgnoreCase(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    const current = arr[i].toLowerCase();
-    for (let j = i + 1; j < arr.length; j++) {
-      if (current === arr[j].toLowerCase()) {
+function hasDuplicatesIgnoreCase(values) {
+  for (let i = 0; i < values.length; i++) {
+    const current = values[i].toLowerCase();
+    for (let j = i + 1; j < values.length; j++) {
+      if (current === values[j].toLowerCase()) {
         return true;
       }
     }
